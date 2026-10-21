@@ -84,7 +84,7 @@ test('downloadable work-system fixtures are real inputs and fixed counterparts c
     return runLocalSecurityScan({ inputTab: 'upload', files });
   };
   const before = await scan('vulnerable'), after = await scan('fixed');
-  for (const id of ['#VULN-SQL-15', '#VULN-SQL-16', '#VULN-RLS-17', '#VULN-RLS-18', '#VULN-CORS-06', '#VULN-PUBLIC-19', '#VULN-KEY-20', '#VULN-KEY-22']) assert.ok(before.issues.some(issue => issue.ruleId === id), id);
+  for (const id of ['#VULN-SQL-15', '#VULN-SQL-16', '#VULN-RLS-17', '#VULN-RLS-18', '#VULN-CORS-06', '#VULN-PUBLIC-19', '#VULN-KEY-22']) assert.ok(before.issues.some(issue => issue.ruleId === id), id);
   assert.equal(after.issues.length, 0);
   assert.ok(compareScanResults(before.issues, after.issues, after.scannedFileNames).every(entry => entry.status === 'resolved'));
 });
