@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>문단속 · MOONDANSOK - 내 서비스의 첫 보안 점검</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&amp;family=Space+Mono:ital,wght@0,400;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-deep": "#090c15",
+            "surface-twilight": "#0f1422",
+            "parchment-pure": "#f8f6f0",
+            "parchment-muted": "#e2ded5",
+            "glow-amber": "#f59e0b",
+            "border-astral": "#23293d",
+            "outline-dim": "rgba(255, 255, 255, 0.08)",
+          },
+          fontFamily: {
+            serif: ['"Noto Serif KR"', 'serif'],
+            mono: ['"Space Mono"', 'monospace'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #090c15;
+      color: #e2ded5;
+      font-family: 'Noto Serif KR', serif;
+      overflow-x: hidden;
+    }
+
+    /* Ambient stars twinkle */
+    @keyframes starPulse {
+      0%, 100% { opacity: 0.2; transform: scale(0.9); }
+      50% { opacity: 0.85; transform: scale(1.15); }
+    }
+
+    @keyframes shootingStar {
+      0% { transform: translateX(0) translateY(0) rotate(-35deg); opacity: 0; width: 0; }
+      15% { opacity: 0.9; width: 140px; }
+      35% { transform: translateX(260px) translateY(180px) rotate(-35deg); opacity: 0; width: 40px; }
+      100% { transform: translateX(260px) translateY(180px) rotate(-35deg); opacity: 0; width: 0; }
+    }
+
+    @keyframes goldenHalo {
+      0%, 100% {
+        box-shadow: 0 0 50px -10px rgba(245, 158, 11, 0.35), 0 0 100px 10px rgba(217, 119, 6, 0.15);
+        border-color: rgba(245, 158, 11, 0.45);
+      }
+      50% {
+        box-shadow: 0 0 85px 0px rgba(245, 158, 11, 0.6), 0 0 140px 30px rgba(245, 158, 11, 0.28);
+        border-color: rgba(253, 230, 138, 0.85);
+      }
+    }
+
+    @keyframes floatSubtle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .portal-halo {
+      animation: goldenHalo 4s ease-in-out infinite, floatSubtle 6s ease-in-out infinite;
+    }
+
+    .star-twinkle-1 { animation: starPulse 3.2s ease-in-out infinite; }
+    .star-twinkle-2 { animation: starPulse 4.5s ease-in-out infinite 1.5s; }
+    .star-twinkle-3 { animation: starPulse 2.8s ease-in-out infinite 0.7s; }
+
+    .shooting-star-line {
+      position: absolute;
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(245,158,11,0.7), transparent);
+      animation: shootingStar 7s ease-in-out infinite;
+      pointer-events-none;
+    }
+
+    /* Transition classes for 2-step journey */
+    .transition-view {
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .editorial-border {
+      border: 1px solid rgba(255, 255, 255, 0.09);
+    }
+    .editorial-border-hover:hover {
+      border-color: rgba(245, 158, 11, 0.4);
+      background-color: rgba(18, 24, 38, 0.65);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090c15;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(245, 158, 11, 0.25);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(245, 158, 11, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-[#090c15] text-[#e2ded5] min-h-screen selection:bg-[#f59e0b] selection:text-black relative">
+<!-- Ambient Sky Elements (Always subtly present) -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<!-- Star particles -->
+<div class="star-twinkle-1 absolute top-[14%] left-[18%] w-1.5 h-1.5 rounded-full bg-amber-200"></div>
+<div class="star-twinkle-2 absolute top-[28%] right-[22%] w-2 h-2 rounded-full bg-blue-200"></div>
+<div class="star-twinkle-3 absolute top-[42%] left-[12%] w-1 h-1 rounded-full bg-white"></div>
+<div class="star-twinkle-1 absolute top-[70%] left-[8%] w-1.5 h-1.5 rounded-full bg-amber-100"></div>
+<div class="star-twinkle-2 absolute top-[65%] right-[14%] w-1.5 h-1.5 rounded-full bg-amber-200"></div>
+<div class="star-twinkle-3 absolute top-[18%] right-[38%] w-1 h-1 rounded-full bg-blue-100"></div>
+<div class="shooting-star-line top-[15%] left-[25%]"></div>
+<div class="shooting-star-line top-[48%] left-[60%] [animation-delay:3.5s]"></div>
+<!-- Soft Vignette & Cosmic Glow -->
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(245,158,11,0.06),transparent_65%)]"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#090c15]/60 to-[#090c15]"></div>
+</div>
+<!-- ========================================================================= -->
+<!-- 1. INTRO PHASE: 오직 신비로운 문만 존재하는 미니멀 인트로 (First Impression) -->
+<!-- ========================================================================= -->
+<div class="transition-view relative z-20 min-h-screen flex flex-col justify-between items-center px-6 py-10 opacity-100 scale-100" id="intro-view">
+<!-- Top Minimal Editorial Header -->
+<header class="w-full max-w-4xl flex items-center justify-between text-xs tracking-widest text-[#a8a396]">
+<div class="font-mono text-[11px] tracking-[0.2em] uppercase text-amber-300/80">
+        [PORTAL_01] · SECURITY VIGILANCE
+      </div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+<span class="font-serif tracking-wider text-[12px] text-[#f8f6f0]">문단속 · MOONDANSOK</span>
+</div>
+<div class="font-mono text-[11px] text-[#868173] tracking-widest hidden sm:block">
+        2026 ARCHIVE
+      </div>
+</header>
+<!-- Center Stage: The Luminous Glowing Door Portal & Poetry -->
+<main class="my-auto flex flex-col items-center text-center max-w-2xl px-4">
+<!-- Poetic Subtitle -->
+<div class="mb-5 space-y-1">
+<span class="font-mono text-[11px] text-amber-400/90 tracking-[0.25em] uppercase block">
+          THE ENCHANTED THRESHOLD
+        </span>
+<h1 class="text-2xl sm:text-3xl md:text-4xl font-light text-[#f8f6f0] tracking-tight leading-snug">
+          문이 열리면, 안전한 여정이 시작됩니다.
+        </h1>
+</div>
+<!-- The Mystical Door Frame (Click to Trigger Transition) -->
+<div aria-label="문단속 보안 점검실 열기" class="group relative mt-2 mb-6 cursor-pointer transform transition-all duration-700 hover:scale-[1.03] active:scale-95" id="door-trigger" onclick="enterInspectionRoom()" role="button" tabindex="0">
+<!-- Luminous Amber / Starlight Halo -->
+<div class="absolute -inset-4 rounded-[28px] bg-gradient-to-t from-amber-500/25 via-amber-400/10 to-transparent blur-2xl group-hover:from-amber-400/40 group-hover:blur-3xl transition-all duration-700"></div>
+<!-- Arch / Portal Frame -->
+<div class="portal-halo relative w-64 h-[380px] sm:w-72 sm:h-[430px] rounded-2xl overflow-hidden border border-amber-400/60 bg-[#0f1422] p-1.5 shadow-2xl transition-all duration-500">
+<!-- Inner Picture Container -->
+<div class="relative w-full h-full rounded-[11px] overflow-hidden">
+<img alt="신비롭고 찬란하게 빛나는 열린 점검의 문" class="w-full h-full object-cover object-center filter saturate-125 brightness-105 transition-transform duration-1000 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida/AEtjO1VbbzUhWGaQJG6WxmPHnmgjBWtzOPE0PYpIouclrpN86EoGSReOzTCl9kK98j4iGOaG0xFzNVIzFQNOGRLxzLdTijTlkt5DWSbZdGHJouw1-vBTfospLDvnnUb_Ho-3jAXxpeWTwIYGWp-vbcJ-jCsVWq_m6xS4EjmmqzCY32NcODcRifgk-7z3rtBH3XQrds97W5CMBB9MJd7tdRyKMJBnFCOnY36Z6kmbAiSWau5JbPzP-p89p9wS"/>
+<!-- Shading vignette -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#090c15] via-transparent to-black/20 opacity-80 group-hover:opacity-60 transition-opacity"></div>
+<!-- Floating Stardust Particles inside Door -->
+<div class="absolute top-6 left-6 w-1.5 h-1.5 rounded-full bg-amber-200 animate-ping"></div>
+<div class="absolute bottom-24 right-8 w-2 h-2 rounded-full bg-white animate-pulse"></div>
+<!-- Minimal Badge on Door Foot -->
+<div class="absolute bottom-0 inset-x-0 p-5 flex flex-col items-center text-center">
+<div class="w-10 h-10 rounded-full bg-amber-400/90 text-slate-950 flex items-center justify-center shadow-lg shadow-amber-400/60 mb-2 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110">
+<i class="fa-solid fa-key text-sm"></i>
+</div>
+<span class="font-mono text-[10px] tracking-[0.2em] uppercase text-amber-300 drop-shadow">TOUCH TO ENTER</span>
+<p class="text-xs font-serif text-[#f8f6f0] mt-0.5 tracking-wide group-hover:text-amber-200 transition-colors">
+                점검의 문 열기
+              </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Guiding Prompt Below Door -->
+<div class="space-y-2">
+<p class="font-serif text-xs sm:text-sm text-[#b5b0a3] tracking-wide">
+          빛나는 문을 터치하거나 클릭하여 <span class="text-amber-300 border-b border-amber-300/40 pb-0.5">보안 점검실</span>로 입장하세요
+        </p>
+<p class="font-mono text-[11px] text-[#6d685c] tracking-wider">
+          무설치 브라우저 즉시 검사 · 소스코드 외부 미전송
+        </p>
+</div>
+</main>
+<!-- Bottom Editorial Footer Meta -->
+<footer class="w-full max-w-4xl flex items-center justify-between text-[11px] text-[#787366] font-mono border-t border-white/5 pt-4">
+<div>© 2026 MOONDANSOK</div>
+<div class="italic font-serif text-[#8f8a7c]">누구나 쉬운 서정적 보안 점검 가이드</div>
+<div>ENCRYPTED PROTOCOL</div>
+</footer>
+</div>
+<!-- ========================================================================= -->
+<!-- 2. INSPECTION DASHBOARD: 감성 에디토리얼 점검 화면 (Zoomed In & Revealed) -->
+<!-- ========================================================================= -->
+<div class="transition-view hidden opacity-0 scale-95 relative z-20 min-h-screen flex flex-col max-w-5xl mx-auto px-6 py-10" id="inspection-view">
+<!-- Top Editorial Navigation Bar with Return to Door Button -->
+<header class="flex items-center justify-between pb-6 border-b border-white/10">
+<div class="flex items-center gap-3">
+<!-- Return Button -->
+<button class="font-mono text-xs tracking-wider text-amber-300/90 hover:text-amber-200 flex items-center gap-2 px-3 py-1.5 rounded-lg border border-amber-400/25 bg-[#0f1422] hover:bg-amber-400/10 transition-all" onclick="returnToDoorIntro()">
+<i class="fa-solid fa-arrow-left text-[11px]"></i>
+<span>[← 문 닫고 홈으로]</span>
+</button>
+<span class="text-white/20 font-light">|</span>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/80 animate-pulse"></span>
+<span class="font-serif text-sm text-[#f8f6f0]">문단속 보안 점검실</span>
+<span class="font-mono text-[10px] text-amber-400/80 px-2 py-0.5 rounded bg-amber-400/10 border border-amber-400/20">게이트 열림</span>
+</div>
+</div>
+<!-- Quick Action / Guide Link -->
+<button class="text-xs font-serif text-[#b8b3a5] hover:text-amber-300 transition-colors flex items-center gap-1.5" onclick="openVideoGuideModal()">
+<i class="fa-regular fa-circle-play text-amber-400 text-sm"></i>
+<span>이용 안내 영상</span>
+</button>
+</header>
+<!-- Editorial Intro Banner within Dashboard -->
+<section class="mt-8 mb-10 pb-8 border-b border-white/5 space-y-3">
+<div class="font-mono text-[11px] tracking-[0.22em] uppercase text-amber-400/80">
+        [AUDIT_ROOM] · SAFEGUARDING YOUR CODE AND APIS
+      </div>
+<h2 class="text-2xl sm:text-3xl font-light text-[#f8f6f0] tracking-tight leading-snug">
+        업무 자료와 접속 키,<br class="sm:hidden"/> 배포 전에 확인하세요.
+      </h2>
+<p class="font-serif text-sm text-[#bab5a7] max-w-2xl leading-relaxed">
+        코드와 설정 파일에서 자료 노출 및 위험한 접근 설정을 찾아요.<br/>
+        발견 위치와 수정 방법을 확인하고, 고친 뒤 다시 비교하세요.
+      </p>
+</section>
+<!-- Inspection Type Switcher (01 / 02) -->
+<div class="flex items-center gap-3 mb-6">
+<button class="font-serif text-sm px-5 py-2.5 rounded-xl border border-amber-400/50 bg-amber-400/15 text-[#f8f6f0] transition-all flex items-center gap-2" id="btn-tab-website" onclick="switchTab('website')">
+<span class="font-mono text-xs text-amber-400 font-bold">01.</span>
+<span>웹사이트 주소로 검사</span>
+</button>
+<button class="font-serif text-sm px-5 py-2.5 rounded-xl border border-white/10 bg-[#0f1422] text-[#9c9789] hover:text-[#f8f6f0] hover:border-white/20 transition-all flex items-center gap-2" id="btn-tab-code" onclick="switchTab('code')">
+<span class="font-mono text-xs text-[#8c887a] font-bold">02.</span>
+<span>코드 파일로 검사</span>
+</button>
+</div>
+<!-- TAB PANEL 1: 웹사이트 주소로 검사 (01) -->
+<div class="editorial-border rounded-2xl bg-[#0d121f]/80 backdrop-blur-md p-6 sm:p-8 space-y-6" id="panel-website">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-mono text-[11px] text-amber-400 tracking-wider">ENDPOINT &amp; PROTOCOL SCAN</span>
+<h3 class="text-lg font-serif font-medium text-[#f8f6f0] mt-1">배포된 서비스 주소(URL) 점검</h3>
+<p class="text-xs text-[#a39e91] mt-1">
+            이미 배포한 사이트가 있나요? 연결과 보호 설정, 공개된 정보를 살펴봐요.
+          </p>
+</div>
+<div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/25 flex items-center justify-center text-blue-400">
+<i class="fa-solid fa-globe"></i>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-xs font-mono text-[#a8a396]">검사 대상 URL 입력</label>
+<div class="flex flex-col sm:flex-row gap-3">
+<div class="relative flex-1">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#716c5f]">
+<i class="fa-solid fa-link text-xs"></i>
+</span>
+<input class="w-full pl-10 pr-4 py-3 bg-[#090c15] border border-white/10 rounded-xl text-sm font-mono text-[#f8f6f0] placeholder-[#5c574c] focus:outline-none focus:border-amber-400/70" id="target-url-input" placeholder="https://your-service.com" type="url" value="https://my-internal-ops.company.io"/>
+</div>
+<button class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm tracking-wide shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2 shrink-0 font-serif" onclick="triggerScanSimulation('website')">
+<i class="fa-solid fa-magnifying-glass text-xs"></i>
+<span>검사 시작</span>
+</button>
+</div>
+</div>
+<!-- Scan result card simulation -->
+<div class="hidden p-5 rounded-xl bg-[#090d16] border border-amber-400/30 space-y-3" id="website-scan-result">
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="text-xs font-serif font-medium text-amber-300 flex items-center gap-2">
+<i class="fa-solid fa-shield-halved text-amber-400"></i>
+            점검 결과: 2건의 보안 설정 주의 항목 발견
+          </span>
+<span class="font-mono text-[10px] text-[#7a7569]">SCAN_TIME: 0.38s</span>
+</div>
+<div class="space-y-2 text-xs font-serif">
+<div class="p-3 rounded-lg bg-amber-950/20 border border-amber-500/30 text-[#fde68a] flex items-start gap-2.5">
+<span class="font-mono text-[11px] text-amber-400 font-bold mt-0.5">WARNING 01</span>
+<div>
+<p class="font-semibold text-white">CORS 헤더 전체 허용(*) 탐지</p>
+<p class="text-[11px] text-amber-200/80 mt-0.5 leading-relaxed">
+                모든 외부 도메인에서의 무제한 데이터 요청이 허용되어 있어 업무 데이터가 탈취될 수 있습니다.
+              </p>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-blue-950/20 border border-blue-500/30 text-blue-200 flex items-start gap-2.5">
+<span class="font-mono text-[11px] text-blue-400 font-bold mt-0.5">NOTICE 02</span>
+<div>
+<p class="font-semibold text-white">X-Powered-By 서버 식별 헤더 노출</p>
+<p class="text-[11px] text-blue-200/80 mt-0.5 leading-relaxed">
+                내부 프레임워크 정보가 헤더에 포함되어 있습니다. 숨김 처리를 권장합니다.
+              </p>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-2 flex items-center gap-2 text-[11px] font-mono text-[#8a8475]">
+<i class="fa-solid fa-lock text-amber-400/80"></i>
+<span>SSL 인증서, 보안 헤더 누출값, 공개 엔드포인트를 안전하게 탐지합니다.</span>
+</div>
+</div>
+<!-- TAB PANEL 2: 코드 파일로 검사 (02) -->
+<div class="hidden editorial-border rounded-2xl bg-[#0d121f]/80 backdrop-blur-md p-6 sm:p-8 space-y-6" id="panel-code">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-mono text-[11px] text-amber-400 tracking-wider">LOCAL REPOSITORY INSPECTION</span>
+<h3 class="text-lg font-serif font-medium text-[#f8f6f0] mt-1">코드 및 환경 설정 파일 점검</h3>
+<p class="text-xs text-[#a39e91] mt-1">
+            만들고 있는 코드가 있나요? 비밀키 노출과 위험한 설정을 찾아봐요.
+          </p>
+</div>
+<div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400">
+<i class="fa-regular fa-folder-open"></i>
+</div>
+</div>
+<!-- Drag & Drop Zone -->
+<div class="border-2 border-dashed border-white/10 hover:border-amber-400/50 rounded-2xl p-8 text-center bg-[#090c15]/60 cursor-pointer transition-colors group" onclick="triggerScanSimulation('code')">
+<div class="w-14 h-14 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+<i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+</div>
+<h4 class="text-sm font-serif font-medium text-[#f8f6f0]">파일을 이곳에 끌어다 놓거나 클릭하여 선택</h4>
+<p class="font-mono text-xs text-[#827d70] mt-1.5">.env, config.js, settings.py, schema.sql 지원</p>
+<button class="mt-4 px-4 py-2 rounded-xl bg-[#0f1422] hover:bg-amber-400/20 text-xs font-mono text-amber-300 border border-amber-400/30 transition-all" type="button">
+          [ 컴퓨터에서 파일 선택하기 ]
+        </button>
+</div>
+<!-- Code scan result simulation -->
+<div class="hidden p-5 rounded-xl bg-[#090d16] border border-amber-400/30 space-y-3" id="code-scan-result">
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<span class="text-xs font-serif font-medium text-emerald-400 flex items-center gap-2">
+<i class="fa-solid fa-circle-check"></i>
+            로컬 브라우저 분석 완료: app_config.env
+          </span>
+<span class="font-mono text-[10px] text-[#7a7569]">OFFLINE_ANALYSIS</span>
+</div>
+<div class="p-3 rounded-lg bg-red-950/20 border border-red-500/30 text-[#fecaca] text-xs font-serif flex items-start gap-2.5">
+<span class="font-mono text-[11px] text-red-400 font-bold mt-0.5">CRITICAL</span>
+<div>
+<p class="font-semibold text-white">Stripe Secret Key 하드코딩 노출</p>
+<p class="text-[11px] text-red-200/80 mt-0.5 leading-relaxed">
+              line 14에 sk_live_... 키 패턴이 평문으로 포함되어 있습니다. 환경 변수 암호화 저장소로 이전하세요.
+            </p>
+</div>
+</div>
+</div>
+<div class="pt-2 flex items-center gap-2 text-[11px] font-mono text-[#8a8475]">
+<i class="fa-solid fa-key text-amber-400/80"></i>
+<span>API Secret Key, 토큰 하드코딩, .env 누출을 서버 전송 없이 브라우저 내에서만 검사합니다.</span>
+</div>
+</div>
+<!-- 03. 업무시스템에서 먼저 확인할 것 (Checklist Section) -->
+<section class="mt-12 space-y-4">
+<div class="flex items-center justify-between border-b border-white/5 pb-2">
+<div class="flex items-center gap-2">
+<span class="font-mono text-xs text-amber-400 font-bold">03.</span>
+<h3 class="font-serif text-sm font-medium text-[#f8f6f0]">업무시스템에서 먼저 확인할 것</h3>
+</div>
+<span class="font-mono text-[11px] text-[#787366] tracking-wider">CHECKPOINT ARCHIVE</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Item 1 -->
+<div class="editorial-border editorial-border-hover rounded-xl p-5 bg-[#0d121f]/50 transition-all space-y-2">
+<div class="font-mono text-[10px] text-amber-400/90 tracking-widest">[CHECK_01]</div>
+<h4 class="font-serif text-xs font-medium text-[#f8f6f0] flex items-center gap-1.5">
+            접속 키가 새지 않나요?
+          </h4>
+<p class="font-serif text-[11px] text-[#9c9789] leading-relaxed">
+            Stripe·Supabase·AI·클라우드·협업 도구의 비밀값과 공개 환경변수를 점검해요.
+          </p>
+</div>
+<!-- Item 2 -->
+<div class="editorial-border editorial-border-hover rounded-xl p-5 bg-[#0d121f]/50 transition-all space-y-2">
+<div class="font-mono text-[10px] text-blue-400/90 tracking-widest">[CHECK_02]</div>
+<h4 class="font-serif text-xs font-medium text-[#f8f6f0] flex items-center gap-1.5">
+            자료 접근이 너무 넓지 않나요?
+          </h4>
+<p class="font-serif text-[11px] text-[#9c9789] leading-relaxed">
+            RLS 비활성화·전체 허용 정책과 CORS 전체 허용 코드를 찾아요.
+          </p>
+</div>
+<!-- Item 3 -->
+<div class="editorial-border editorial-border-hover rounded-xl p-5 bg-[#0d121f]/50 transition-all space-y-2">
+<div class="font-mono text-[10px] text-emerald-400/90 tracking-widest">[CHECK_03]</div>
+<h4 class="font-serif text-xs font-medium text-[#f8f6f0] flex items-center gap-1.5">
+            입력값이 SQL을 바꾸지 않나요?
+          </h4>
+<p class="font-serif text-[11px] text-[#9c9789] leading-relaxed">
+            입력값을 이어 붙이는 SQL과 위험한 원시 쿼리를 확인해요.
+          </p>
+</div>
+</div>
+<p class="font-serif text-[11px] text-[#716c60] pt-1 leading-relaxed">
+        ※ 소스에서 확인 가능한 패턴 검사입니다. 실제 DB 설정·임직원별 세부 권한·전체 데이터 흐름은 별도 심층 검증이 필요합니다.
+      </p>
+</section>
+<!-- Video Guide Banner & Privacy Reassurance -->
+<section class="mt-8 grid grid-cols-1 md:grid-cols-12 gap-4">
+<!-- Video Guide Card -->
+<div class="md:col-span-7 editorial-border rounded-xl p-5 bg-[#0d121f]/60 flex items-center justify-between gap-4">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 shrink-0">
+<i class="fa-solid fa-play text-xs ml-0.5"></i>
+</div>
+<div>
+<h5 class="font-serif text-xs font-medium text-[#f8f6f0]">처음이라면, 영상으로 확인하세요</h5>
+<p class="font-serif text-[11px] text-[#8e897c] mt-0.5">업무용 예시로 보는 검사 → 수정 → 재검사 · 20초 자막 안내</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg border border-white/10 hover:border-amber-400/40 text-xs font-serif text-[#d6d1c4] shrink-0 transition-colors" onclick="openVideoGuideModal()">
+          영상 보기
+        </button>
+</div>
+<!-- Data Handling Principle Card -->
+<div class="md:col-span-5 editorial-border rounded-xl p-5 bg-[#0d121f]/60 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 text-xs font-serif text-[#f8f6f0]">
+<i class="fa-solid fa-shield-cat text-amber-400"></i>
+<span>내 자료는 어떻게 처리되나요?</span>
+</div>
+<p class="font-serif text-[11px] text-[#8e897c] mt-1.5 leading-relaxed">
+            파일은 내 브라우저에서 안전하게 점검돼요.<br/>
+            주소 검사는 이 컴퓨터가 사이트에 안전히 접속합니다.
+          </p>
+</div>
+<button class="mt-3 text-left font-mono text-[11px] text-amber-400/80 hover:text-amber-300 transition-colors" onclick="openSecurityPolicyModal()">
+          [보안 정책 상세 보기 →]
+        </button>
+</div>
+</section>
+<!-- Editorial Footer -->
+<footer class="mt-16 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] font-mono text-[#666154]">
+<div>문단속 · MOONDANSOK 2026</div>
+<div class="font-serif text-[#787366]">새로고침 시 결과는 초기화되므로 필요 시 기록을 메모해 두세요.</div>
+<button class="hover:text-amber-300 transition-colors" onclick="returnToDoorIntro()">
+        [DOORWAY_HOME]
+      </button>
+</footer>
+</div>
+<!-- Vanilla JavaScript Logic for 2-Step Seamless Experience -->
+<script>
+    // Step 1 -> Step 2: Camera Zoom in & Fade transition
+    function enterInspectionRoom() {
+      const introView = document.getElementById('intro-view');
+      const inspectionView = document.getElementById('inspection-view');
+
+      // Trigger cinematic zoom & fade out on intro
+      introView.style.transform = 'scale(1.2)';
+      introView.style.opacity = '0';
+
+      setTimeout(() => {
+        introView.classList.add('hidden');
+        inspectionView.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+
+        // Smoothly fade in inspection dashboard
+        requestAnimationFrame(() => {
+          inspectionView.classList.remove('opacity-0', 'scale-95');
+          inspectionView.classList.add('opacity-100', 'scale-100');
+        });
+      }, 500);
+    }
+
+    // Step 2 -> Step 1: Return to Door Intro
+    function returnToDoorIntro() {
+      const introView = document.getElementById('intro-view');
+      const inspectionView = document.getElementById('inspection-view');
+
+      inspectionView.classList.remove('opacity-100', 'scale-100');
+      inspectionView.classList.add('opacity-0', 'scale-95');
+
+      setTimeout(() => {
+        inspectionView.classList.add('hidden');
+        introView.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+
+        requestAnimationFrame(() => {
+          introView.style.transform = 'scale(1)';
+          introView.style.opacity = '1';
+        });
+      }, 450);
+    }
+
+    // Switch between Website & Code inspection tabs
+    function switchTab(mode) {
+      const btnWeb = document.getElementById('btn-tab-website');
+      const btnCode = document.getElementById('btn-tab-code');
+      const panelWeb = document.getElementById('panel-website');
+      const panelCode = document.getElementById('panel-code');
+
+      if (mode === 'website') {
+        btnWeb.className = 'font-serif text-sm px-5 py-2.5 rounded-xl border border-amber-400/50 bg-amber-400/15 text-[#f8f6f0] transition-all flex items-center gap-2';
+        btnCode.className = 'font-serif text-sm px-5 py-2.5 rounded-xl border border-white/10 bg-[#0f1422] text-[#9c9789] hover:text-[#f8f6f0] hover:border-white/20 transition-all flex items-center gap-2';
+        panelWeb.classList.remove('hidden');
+        panelCode.classList.add('hidden');
+      } else {
+        btnCode.className = 'font-serif text-sm px-5 py-2.5 rounded-xl border border-amber-400/50 bg-amber-400/15 text-[#f8f6f0] transition-all flex items-center gap-2';
+        btnWeb.className = 'font-serif text-sm px-5 py-2.5 rounded-xl border border-white/10 bg-[#0f1422] text-[#9c9789] hover:text-[#f8f6f0] hover:border-white/20 transition-all flex items-center gap-2';
+        panelCode.classList.remove('hidden');
+        panelWeb.classList.add('hidden');
+      }
+    }
+
+    // Simulation triggers
+    function triggerScanSimulation(type) {
+      if (type === 'website') {
+        const res = document.getElementById('website-scan-result');
+        res.classList.remove('hidden');
+      } else {
+        const res = document.getElementById('code-scan-result');
+        res.classList.remove('hidden');
+      }
+    }
+
+    function openVideoGuideModal() {
+      alert("이용 안내: '업무용 예시로 보는 검사 → 수정 → 재검사' 20초 가이드 영상이 준비되었습니다.");
+    }
+
+    function openSecurityPolicyModal() {
+      alert("데이터 보호 원칙: 파일 및 코드는 사용자의 브라우저 내에서만 격리 실행되며, 외부 원격 서버로 일체 전송되지 않습니다.");
+    }
+
+    // Keyboard accessibility for door trigger
+    document.getElementById('door-trigger').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        enterInspectionRoom();
+      }
+    });
+  </script>
+</body></html>

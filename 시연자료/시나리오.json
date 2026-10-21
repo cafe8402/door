@@ -1,0 +1,26 @@
+[
+  {
+    "name": "01-화면에-들어간-비밀키",
+    "kind": "browser-secret"
+  },
+  {
+    "name": "02-서버코드에-직접-적힌-비밀키",
+    "kind": "hardcoded-secret"
+  },
+  {
+    "name": "03-고객검색-입력값-연결",
+    "kind": "request-sql"
+  },
+  {
+    "name": "04-외부입력으로-서버명령-실행",
+    "kind": "request-command"
+  },
+  {
+    "name": "05-로그인없이-자료변경-허용",
+    "kind": "public-write"
+  },
+  {
+    "name": "06-입력받은-글을-코드로-실행",
+    "kind": "request-command"
+  }
+]

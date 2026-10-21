@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Noto Serif KR';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(/assets/portal/portal-font-0.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Noto Serif KR';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/portal/portal-font-1.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/portal/portal-font-2.ttf) format('truetype');
+}

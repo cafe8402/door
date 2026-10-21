@@ -1,0 +1,21 @@
+node_modules/
+.pnpm-store/
+artifacts/
+# Unused source mockups and local layout checks
+public/assets/aistudio/
+design/story-layout-check.html
+# Local editor and operating-system files
+.vscode/
+.idea/
+Thumbs.db
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+# Local presentation build tools and independent Sites checkout
+.ppt-build/
+sites/security-check/
+sites/security-check-deploy.tar.gz

@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {stripTypeScriptTypes} from 'node:module';
+const url=(file,replacements=[])=>{let s=stripTypeScriptTypes(fs.readFileSync(new URL(file,import.meta.url),'utf8'));for(const [a,b] of replacements)s=s.replaceAll(a,b);return 'data:text/javascript;base64,'+Buffer.from(s.replaceAll('./sourceAnalysis.mjs', new URL('../src/services/sourceAnalysis.mjs', import.meta.url).href)).toString('base64')};
+const {plainResults,concernOf}=await import(url('../src/services/plainResults.ts',[['./resultGroups',url('../src/services/resultGroups.ts')]]));
+const issue=(ruleId,filePath='src/app.ts')=>({id:ruleId,ruleId,filePath});
+test('privacy, access and other concerns stay separate',()=>{assert.equal(concernOf(issue('#VULN-PII-05')),'privacy');assert.equal(concernOf(issue('#VULN-KEY-34')),'privacy');assert.equal(concernOf(issue('#VULN-FIREBASE-37')),'access');assert.equal(concernOf(issue('#VULN-SQL-15')),'access');assert.equal(concernOf(issue('#WEB-CSP')),'other');});
+test('static findings and empty results never claim proven exposure or safety',()=>{for(const items of [[],[issue('#VULN-KEY-34')]]){const cards=plainResults(items,'real_file');assert.equal(cards.length,3);assert.ok(cards.every(c=>c.status!=='문제를 확인했어요'));assert.equal(cards[1].status,'이번 검사로는 알 수 없어요');}assert.equal(plainResults([issue('#VULN-KEY-34')])[0].status,'확인이 더 필요해요');});
+test('examples are not presented as general findings and demo never implies real company access',()=>{assert.ok(plainResults([issue('#VULN-KEY-34','tests/key.ts')]).every(c=>c.issues.length===0));const cards=plainResults([issue('#API-BOLA')],'api_demo');assert.ok(cards.every(c=>c.status==='연습 결과예요'));assert.match(cards[1].explanation,/내 회사 서비스/);});

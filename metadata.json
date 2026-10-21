@@ -1,0 +1,8 @@
+{
+  "name": "문단속 - 웹·AI 보안 자가 점검",
+  "description": "만들었으면, 문단속. 웹사이트, API, AI 도구의 보안 빈틈을 확인하고 AI 수정 요청문으로 안전하게 해결하는 셀프 점검 도구입니다.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

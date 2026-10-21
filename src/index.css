@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@import "./workspace-theme.css";
+
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+button:focus-visible, summary:focus-visible, a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 3px; }
+summary::-webkit-details-marker { display: none; }
+
+@media print {
+  body { overflow: visible !important; background: white; }
+  body * { visibility: hidden; }
+  #root > div { display: block !important; min-height: 0 !important; }
+  #root > div > :not(.modal-overlay) { display: none !important; }
+  .modal-overlay { visibility: visible; position: absolute; inset: 0; display: block; padding: 0; background: none; backdrop-filter: none; }
+  .report-panel, .report-panel * { visibility: visible; }
+  .report-panel { position: static; width: 100%; max-height: none; max-width: none; overflow: visible; box-shadow: none; border-radius: 0; }
+  .modal-heading { position: static; }
+  .report-print-card { break-inside: avoid; }
+  .report-evidence > div { display: block !important; }
+  .no-print, .no-print * { display: none !important; }
+  @page { margin: 15mm; }
+}

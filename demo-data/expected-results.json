@@ -1,0 +1,245 @@
+{
+  "description": "검사 엔진으로 생성 시 검증한 예상값. resolved의 UI 표시는 패턴 미검출.",
+  "scenarios": [
+    {
+      "folder": "01-openai-key",
+      "label": "OpenAI 키",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-KEY-01",
+      "severity": "high",
+      "category": "detected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "02-anthropic-key",
+      "label": "Anthropic 키",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-KEY-02",
+      "severity": "high",
+      "category": "detected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "03-aws-key",
+      "label": "AWS 키 ID",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-KEY-03",
+      "severity": "high",
+      "category": "detected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "04-browser-ai",
+      "label": "브라우저 AI 직접 호출",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-BROWSER-04",
+      "severity": "high",
+      "category": "detected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "05-personal-data",
+      "label": "주민번호 형식",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-PII-05",
+      "severity": "medium",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "06-cors",
+      "label": "CORS 전체 허용",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-CORS-06",
+      "severity": "medium",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "07-dynamic-code",
+      "label": "동적 코드 실행",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-EVAL-07",
+      "severity": "high",
+      "category": "detected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "08-google-key",
+      "label": "Google API 키",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-KEY-08",
+      "severity": "high",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "09-github-token",
+      "label": "GitHub 토큰",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-KEY-09",
+      "severity": "high",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "10-private-key",
+      "label": "개인키 블록",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-KEY-10",
+      "severity": "high",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "11-shell-execution",
+      "label": "셸 실행",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-EXEC-11",
+      "severity": "high",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "12-html-insertion",
+      "label": "HTML 직접 삽입",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-XSS-12",
+      "severity": "medium",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "13-tls-verification",
+      "label": "TLS 검증 해제",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-TLS-13",
+      "severity": "high",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "14-agent-approval",
+      "label": "에이전트 승인 우회",
+      "before": 1,
+      "after": 0,
+      "ruleId": "#VULN-AGENT-14",
+      "severity": "high",
+      "category": "suspected",
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 0,
+        "unverified": 0,
+        "new": 0
+      }
+    },
+    {
+      "folder": "15-mixed-rescan",
+      "label": "재검사 4개 상태 동시 검증",
+      "before": 3,
+      "after": 2,
+      "expectedComparison": {
+        "resolved": 1,
+        "persisting": 1,
+        "unverified": 1,
+        "new": 1
+      }
+    },
+    {
+      "folder": "16-repeated-findings",
+      "label": "동일 규칙 여러 줄·파일",
+      "expected": 3,
+      "note": "a.js 2건 + b.js 1건. 이슈 ID는 서로 달라야 함."
+    },
+    {
+      "folder": "17-clean-and-empty",
+      "label": "정상 텍스트·빈 파일",
+      "expected": 0,
+      "scannedFiles": 2
+    },
+    {
+      "folder": "18-scope-limit",
+      "label": "현재 규칙의 미탐 한계",
+      "expected": 0,
+      "note": "사용자별 인가 확인이 없는 코드 예시. 현재 규칙은 인가 우회를 분석하지 않으므로 0건이어도 안전 판정이 아님."
+    }
+  ]
+}

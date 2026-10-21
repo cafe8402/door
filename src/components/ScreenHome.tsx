@@ -1,0 +1,39 @@
+import React, { useState } from 'react';
+import { WorkGuideVideo } from './WorkGuideVideo';
+import { ArrowRight, Globe2, FolderCode, ShieldCheck, History, FileDown, LockKeyhole, ScanLine, Play, DoorOpen, KeyRound, Check, Sparkles } from 'lucide-react';
+interface Props {
+  onStart: (mode: 'url' | 'upload') => void;
+  onReturnToPortal: () => void;
+  onOpenHowToUse: () => void;
+  onOpenWhatWeCheck: () => void;
+  onViewResult: () => void;
+  onSaveResult: () => void;
+  lastScan?: { name: string; count: number; date: string };
+}
+export const ScreenHome: React.FC<Props> = ({ onStart, onReturnToPortal, onOpenHowToUse, onOpenWhatWeCheck, onViewResult, onSaveResult, lastScan }) => {
+  const [videoOpen, setVideoOpen] = useState(false);
+  return <div className="workspace-home max-w-6xl mx-auto px-5 sm:px-8 py-7 sm:py-9 space-y-8">
+    <section className="workspace-hero">
+      <div className="workspace-hero-copy">
+        <span className="workspace-eyebrow"><ShieldCheck className="w-3.5 h-3.5 text-work-gold" />임직원이 사용하는 업무시스템 점검</span>
+        <h1>업무 자료와 접속 키,<br /><span>배포 전에 확인하세요.</span></h1>
+        <p className="text-sm text-work-copy leading-relaxed mt-5">코드와 설정 파일에서 자료 노출·위험한 접근 설정을 찾아요.<br className="hidden xl:block" />발견 위치와 수정 방법을 확인하고, 고친 뒤 다시 비교하세요.</p>
+        <div className="flex flex-wrap gap-3 mt-7"><button onClick={() => onStart('upload')} className="workspace-gold-button"><DoorOpen className="w-4 h-4" />보안 점검 시작하기<ArrowRight className="w-4 h-4" /></button><button onClick={() => onStart('url')} className="workspace-ghost-button"><Globe2 className="w-4 h-4" />주소로 검사하기</button></div>
+        <div className="flex flex-wrap gap-x-5 gap-y-2 mt-6 text-[11px] text-work-muted"><span className="inline-flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-work-gold" />파일은 내 브라우저에서 검사</span><span className="inline-flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-work-gold" />외부 AI에 소스코드 미전송</span></div>
+      </div>
+      <div className="workspace-hero-art"><button onClick={onReturnToPortal} className="workspace-hero-door" aria-label="문이 있는 입구 다시 보기"><img src="/assets/portal/door-original.jpg" alt="별빛 아래 황금빛으로 열린 문" width={512} height={286} /><span className="workspace-hero-door-shade" /><span className="workspace-hero-door-label"><span className="workspace-hero-key"><KeyRound className="w-4 h-4" /></span><span className="text-work-gold text-[10px] font-bold tracking-[.14em]">PORTAL OF VIGILANCE</span><strong className="block text-xs text-white mt-1">안심을 향해 열린 문</strong><span className="block text-[10px] text-work-copy mt-1">문이 있는 입구 다시 보기</span></span></button><p className="text-[10px] text-work-muted mt-3 text-center"><Sparkles className="inline w-3 h-3 text-work-gold mr-1" />작게 열린 틈도 함께 살펴봐요</p></div>
+    </section>
+    <section className="space-y-4"><div className="flex items-end justify-between gap-3"><div><p className="text-[11px] font-bold text-work-accent-copy mb-1">새로운 검사</p><h2 className="text-xl font-bold text-work-title">무엇을 확인할까요?</h2></div><button onClick={onOpenHowToUse} className="text-xs text-work-muted hover:text-work-gold underline underline-offset-4">처음이라면 이용 방법</button></div>
+      <div className="grid sm:grid-cols-2 gap-4">{[
+        { mode: 'url' as const, Icon: Globe2, title: '웹사이트 주소로 검사', desc: '이미 배포한 사이트가 있나요?', text: '연결과 보호 설정, 공개된 정보를 살펴봐요.', action: '주소 입력하기', scope: '보안 연결 · 보호 설정 · 공개 코드', color: 'blue' },
+        { mode: 'upload' as const, Icon: FolderCode, title: '코드 파일로 검사', desc: '만들고 있는 코드가 있나요?', text: '비밀키 노출과 위험한 설정을 찾아봐요.', action: '파일 선택하기', scope: '비밀키 · SQL · RLS · 공개 환경변수', color: 'gold' },
+      ].map(({ mode, Icon, title, desc, text, action, scope, color }) => <button key={mode} onClick={() => onStart(mode)} className={`workspace-method-card workspace-method-${color}`}><div className="flex justify-between items-start gap-3"><span className="workspace-method-icon"><Icon className="w-6 h-6" /></span><span className="text-xs font-semibold inline-flex items-center gap-1">{action}<ArrowRight className="w-3.5 h-3.5" /></span></div><h3 className="text-lg font-bold text-work-title mt-5">{title}</h3><p className="text-xs text-work-muted leading-relaxed mt-3">{desc}<br />{text}</p><p className="flex items-center gap-2 mt-5 pt-4 border-t border-work-line-soft text-[11px] text-work-copy"><span className="w-1.5 h-1.5 rounded-full bg-current" />{scope}</p></button>)}</div>
+      {lastScan && <p className="text-xs text-work-muted">새 검사를 시작하면 상세 결과 화면이 바뀌어요. 연결한 업무시스템의 검사 요약과 조치 기록은 남아요.</p>}
+    </section>
+    {lastScan && <section className="bg-work-panel border border-work-line rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-4"><div className="flex gap-3 items-center flex-1 min-w-0"><span className="p-3 bg-work-layer rounded-xl text-work-gold"><History className="w-5 h-5" /></span><div className="min-w-0"><p className="text-xs text-work-muted">방금 확인한 검사</p><h2 className="font-bold truncate text-work-title">{lastScan.name}</h2><p className="text-xs text-work-muted mt-1">확인할 항목 {lastScan.count}개 · {new Date(lastScan.date).toLocaleDateString('ko-KR')}</p></div></div><div className="flex gap-2"><button className="rounded-xl px-4 py-2.5 text-sm font-semibold border border-work-line flex items-center gap-2" onClick={onSaveResult}><FileDown className="w-4 h-4" />결과 저장</button><button className="rounded-xl px-4 py-2.5 text-sm font-semibold bg-work-accent text-white" onClick={onViewResult}>이어서 보기</button></div></section>}
+    <section className="rounded-2xl bg-work-panel border border-work-line p-5 sm:p-6"><div className="flex items-center gap-2"><span className="text-work-gold text-xs font-mono">03.</span><h2 className="font-bold text-work-title">업무시스템에서 먼저 확인할 것</h2></div><div className="grid sm:grid-cols-3 gap-4 mt-4">{[{ title: '접속 키가 새지 않나요?', text: 'Stripe·Supabase·AI·클라우드·협업 도구의 비밀값과 공개 환경변수를 확인해요.' }, { title: '자료 접근이 너무 넓지 않나요?', text: 'RLS 비활성화·전체 허용 정책과 CORS 전체 허용 코드를 찾아요.' }, { title: '입력값이 SQL을 바꾸지 않나요?', text: '입력값을 이어 붙이는 SQL과 위험한 원시 쿼리를 찾아요.' }].map((item, index) => <div key={item.title} className="rounded-xl bg-work-layer p-4"><span className="text-[10px] tracking-wider font-mono text-work-gold">[CHECK_0{index + 1}]</span><h3 className="text-sm font-bold text-work-title mt-2">{item.title}</h3><p className="text-xs text-work-muted leading-relaxed mt-2">{item.text}</p></div>)}</div><p className="text-xs text-work-muted mt-4 leading-relaxed">소스에서 확인 가능한 패턴 검사예요. 실제 DB 설정·임직원별 권한·전체 데이터 흐름은 별도 검증이 필요해요.</p></section>
+    <section className="rounded-2xl bg-work-tint border border-work-accent-line p-5 flex flex-col sm:flex-row sm:items-center gap-4"><span className="rounded-xl p-3 bg-work-panel text-work-gold self-start"><Play className="w-5 h-5" /></span><div className="flex-1"><h2 className="font-bold text-work-title">처음이라면, 영상으로 확인하세요</h2><p className="text-xs text-work-muted mt-1">업무용 예시로 보는 검사 → 수정 → 재검사 · 20초 자막 안내</p></div><button onClick={() => setVideoOpen(true)} className="workspace-ghost-button">이용 안내 영상</button></section>
+    {videoOpen && <WorkGuideVideo onClose={() => setVideoOpen(false)} />}
+    <div className="grid sm:grid-cols-2 gap-5 text-sm"><button onClick={onOpenWhatWeCheck} className="text-left flex gap-3 p-2 rounded-xl hover:bg-work-panel"><ScanLine className="w-5 h-5 text-work-accent-copy shrink-0 mt-0.5" /><div><h2 className="font-semibold text-work-title">어떤 부분을 살펴보나요?</h2><p className="text-work-muted text-xs mt-1 leading-relaxed">검사할 수 있는 것과 직접 확인해야 할 것을 알려드려요.</p></div></button><div className="flex gap-3 p-2"><LockKeyhole className="w-5 h-5 text-work-gold shrink-0 mt-0.5" /><div><h2 className="font-semibold text-work-title">코드 원문 없이 관리 기록만</h2><p className="text-work-muted text-xs mt-1 leading-relaxed">업무시스템에 연결한 검사 요약·조치 기록은 이 브라우저에 남아요. 상세 코드 증거는 결과 저장으로 보관해 주세요.</p></div></div></div>
+  </div>;
+};
