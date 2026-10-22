@@ -48,6 +48,23 @@ export function resultActions(issues: SecurityIssue[], mode?: string) {
     fact: group.issues[0].sourceAssessment?.reason || (group.decision === 'fix' ? (group.issues[0].verifiedControl === 'unencrypted-http' ? '실제 주소에 요청을 보내 암호화되지 않은 HTTP 연결이 남아 있는 것을 확인했어요. 개인정보 유출이 확인됐다는 뜻은 아니에요.' : '실제 연결에서 인증서 검증 실패 또는 보안 연결 해제를 확인했어요. 페이지 내용과 개인정보는 확인하지 못했어요.') : mode === 'api_demo' || group.kind === 'demo' ? '가짜 자료로 만든 연습 결과예요. 회사 서비스는 검사하지 않았어요.' : mode === 'url' ? '사이트가 돌려준 공개 응답에서 찾았어요. 실제 사용 중인 비밀값인지, 개인 자료인지까지 확인한 것은 아니에요.' : '선택한 파일에서 이 내용과 일치하는 부분을 찾았어요. 실제 사람의 정보인지, 사용 중인 코드인지, 밖에서 보이는지는 확인하지 못했어요.'),
   }));
 }
+export function actionExplanation(action: ReturnType<typeof resultActions>[number]) {
+  // A review candidate must not be presented as a confirmed repair or incident.
+  if (action.decision !== 'fix') return null;
+  const explanations = {
+    sql: { harm: '원래 보여주려던 범위 밖의 자료까지 조회될 위험이 있어요', why: '입력한 글이 자료를 찾는 명령의 일부가 됩니다. 특별한 글을 입력하면 조회 조건이 바뀔 수 있어요.' },
+    key: { harm: '다른 사람이 우리 서비스의 비밀키를 사용할 위험이 있어요', why: '비밀키처럼 쓰는 값이 코드에 직접 들어 있습니다. 실제로 쓰는 키라면, 코드를 얻은 사람이 그 키의 권한으로 서비스를 이용할 수 있어요.' },
+    access: { harm: '허용하지 않은 사람이 자료를 바꾸거나 지울 위험이 있어요', why: '자료 변경을 누구에게 허용할지 제한하지 않는 규칙입니다. 실제 서비스에 적용되면 다른 사람이 자료를 변경할 수 있어요.' },
+    execute: { harm: '외부에서 보낸 내용이 프로그램 명령으로 실행될 위험이 있어요', why: '입력받은 내용을 글자로만 다루지 않고 실행하는 코드에 연결했습니다. 서비스가 의도하지 않은 작업을 수행할 수 있어요.' },
+    html: { harm: '방문자 화면에서 원치 않는 코드가 실행될 위험이 있어요', why: '외부에서 받은 내용을 화면에 바로 넣으면, 글 속의 프로그램 코드까지 실행될 수 있어요.' },
+  };
+  const explanation = explanations[action.kind as keyof typeof explanations];
+  if (explanation) return { ...explanation, scope: '코드에서 위험한 연결이나 설정을 찾았어요. 실제 악용·자료 유출 여부를 확인한 것은 아니에요.' };
+  if (action.kind === 'tls') return action.issues[0].verifiedControl === 'unencrypted-http'
+    ? { harm: '주고받는 내용을 다른 사람이 엿볼 위험이 있어요', why: '암호화되지 않은 연결을 허용하고 있어요. 이 연결로 보내는 내용이 보호되지 않을 수 있어요.', scope: '연결 상태를 확인했어요. 실제로 누가 내용을 봤는지는 확인하지 않았어요.' }
+    : { harm: '연결한 사이트를 안전하게 확인할 수 없어요', why: '사이트의 인증서를 정상적으로 확인하지 못했어요. 접속하려던 상대가 맞는지 보장하기 어렵습니다.', scope: '인증서 문제를 확인했어요. 공격이나 자료 유출이 확인됐다는 뜻은 아니에요.' };
+  return { harm: action.title, why: action.fact, scope: '확인한 범위의 결과예요. 실제 피해가 발생했다는 뜻은 아니에요.' };
+}
 export function actionPrompt(group: ReturnType<typeof resultActions>[number], systemName: string) {
   if (group.decision !== 'fix') return maskSecret(`아래 항목은 코드 모양으로 찾은 검토 후보이며 수정이 필요한 문제로 확인되지 않았습니다.
 ${group.title}

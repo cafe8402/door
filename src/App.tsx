@@ -198,7 +198,7 @@ export default function App() {
             <div className="w-7 h-7 rounded-lg bg-work-accent flex items-center justify-center text-white">
               <Lock className="w-4 h-4" />
             </div>
-            <button aria-label="AI 업무도구 보안점검 홈" onClick={() => navigateTo('home')} className="font-bold text-base text-work-title">AI 업무도구 보안점검</button>
+            <button aria-label="ai-work-security 홈" onClick={() => navigateTo('home')} className="font-bold text-base text-work-title">ai-work-security</button>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-work-tint text-work-accent-copy font-semibold border border-work-accent-line/60">
               자가 진단
             </span>
@@ -215,7 +215,7 @@ export default function App() {
 
       {/* Main Content Area (offset by sidebar on desktop) */}
       <div className="flex-1 min-w-0 lg:ml-72 flex flex-col min-h-screen">
-        <header className="workspace-topbar hidden lg:flex"><div className="flex items-center gap-3 min-w-0">{currentScreen !== 'home' && <button className="inline-flex items-center gap-2 text-xs font-semibold text-work-muted hover:text-work-gold shrink-0" onClick={() => navigateTo('home')}><HomeIcon className="w-3.5 h-3.5" />홈으로</button>}<span className="workspace-gate-badge">AI 업무도구 보안점검 점검실</span><span className="text-[11px] text-work-muted hidden xl:inline">공개하기 전 작은 확인, 수정한 뒤 한 번 더.</span></div><button onClick={() => setIsHowToUseOpen(true)} className="text-[11px] text-work-copy hover:text-work-gold shrink-0">처음이라면 이용 방법</button></header>
+        <header className="workspace-topbar hidden lg:flex"><div className="flex items-center gap-3 min-w-0">{currentScreen !== 'home' && <button className="inline-flex items-center gap-2 text-xs font-semibold text-work-muted hover:text-work-gold shrink-0" onClick={() => navigateTo('home')}><HomeIcon className="w-3.5 h-3.5" />홈으로</button>}<span className="workspace-gate-badge">ai-work-security 점검실</span><span className="text-[11px] text-work-muted hidden xl:inline">공개하기 전 작은 확인, 수정한 뒤 한 번 더.</span></div><button onClick={() => setIsHowToUseOpen(true)} className="text-[11px] text-work-copy hover:text-work-gold shrink-0">처음이라면 이용 방법</button></header>
         <main className="flex-1">
           {portfolio.error && <div role="alert" className="m-5 p-4 rounded-xl border border-work-danger-line bg-work-danger-bg text-work-danger-copy text-sm">{portfolio.error}{pendingSave && managedSystemId && <button className="block underline mt-2" onClick={() => { if (portfolio.commit(data => recordRun(data, managedSystemId, pendingSave.input, pendingSave.result, pendingSave.example))) setPendingSave(null); }}>검사 기록 다시 저장</button>}</div>}
           {currentScreen === 'portfolio' && <ScreenPortfolio key={portfolioVisit} initialSystemId={portfolioFocus} data={portfolio.data} commit={portfolio.commit} onScan={system => startNewScan(system.mode, false, system)} />}
@@ -285,6 +285,7 @@ export default function App() {
             <ScreenRescanInput
               systemName={inputData.systemName}
               previousIssues={issues}
+              previousFileNames={inputData.files.map(file => file.name)}
               rescanData={rescanData}
               isUrl={scanMode === 'url'}
               isApiDemo={scanMode === 'api_demo'}
@@ -311,13 +312,13 @@ export default function App() {
         <footer className="mt-auto border-t border-work-line/80 bg-work-panel py-6 px-6 text-xs text-work-muted">
           <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div>
-              <p className="font-semibold text-work-title">AI 업무도구 보안점검 · 만든 서비스에 한 번 더 안심을</p>
+              <p className="font-semibold text-work-title">ai-work-security · 만든 서비스에 한 번 더 안심을</p>
               <p className="text-work-faint mt-0.5">
                 자동 검사는 첫걸음이에요. 실제 문제인지 확인한 뒤 조치해 주세요.
               </p>
             </div>
             <div className="font-mono text-work-faint">
-              © 2026 AI 업무도구 보안점검. All rights reserved.
+              © 2026 ai-work-security. All rights reserved.
             </div>
           </div>
         </footer>

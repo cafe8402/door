@@ -22,12 +22,12 @@ export const ScreenPortal: React.FC<{ onEnter: () => void }> = ({ onEnter }) => 
     <div className="portal-content">
       <header className="portal-header">
         <span className="portal-catalog">[PORTAL_01] · SECURITY VIGILANCE</span>
-        <span className="portal-wordmark"><i aria-hidden="true" />AI 업무도구 보안점검 · AI TOOL SECURITY</span>
+        <span className="portal-wordmark"><i aria-hidden="true" />ai-work-security · AI TOOL SECURITY</span>
         <span className="portal-archive">2026 ARCHIVE</span>
       </header>
       <main className="portal-stage">
         <div className="portal-title"><p>THE ENCHANTED THRESHOLD</p><h1>문이 열리면, 안전한 여정이 시작됩니다.</h1></div>
-        <button type="button" className="portal-door-trigger" aria-label="AI 업무도구 보안점검실 열기" aria-busy={entering} disabled={entering} onClick={enter}>
+        <button type="button" className="portal-door-trigger" aria-label="ai-work-security 점검실 열기" aria-busy={entering} disabled={entering} onClick={enter}>
           <span className="portal-door-aura" aria-hidden="true" />
           <span className="portal-door-frame">
             <span className="portal-door-picture">

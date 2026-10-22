@@ -14,4 +14,4 @@ http.createServer((req, res) => api(req, res, () => {
   if (!file.startsWith(root + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404).end(); return; }
   res.setHeader('Content-Type', (mime[path.extname(file)] || 'application/octet-stream') + (['.html', '.js', '.css', '.json'].includes(path.extname(file)) ? '; charset=utf-8' : ''));
   res.setHeader('X-Content-Type-Options', 'nosniff'); fs.createReadStream(file).pipe(res);
-})).listen(port, '127.0.0.1', () => console.log(`AI 업무도구 보안점검: http://127.0.0.1:${port}/`));
+})).listen(port, '127.0.0.1', () => console.log(`ai-work-security: http://127.0.0.1:${port}/`));

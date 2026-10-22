@@ -17,7 +17,7 @@ export function createApiMiddleware() {
     };
     const port = req.socket.localPort;
     const allowedHosts = [`127.0.0.1:${port}`, `localhost:${port}`];
-    if (!allowedHosts.includes(req.headers.host) || (req.headers.origin && !allowedHosts.map(host => 'http://' + host).includes(req.headers.origin))) return reply(403, { error: '이 컴퓨터의 AI 업무도구 보안점검 화면에서만 검사할 수 있습니다.' });
+    if (!allowedHosts.includes(req.headers.host) || (req.headers.origin && !allowedHosts.map(host => 'http://' + host).includes(req.headers.origin))) return reply(403, { error: '이 컴퓨터의 ai-work-security 화면에서만 검사할 수 있습니다.' });
     if (req.method !== 'POST') return reply(405, { error: 'POST 요청만 지원합니다.' });
     if (!/^application\/json(?:;|$)/i.test(req.headers['content-type'] || '')) return reply(415, { error: 'JSON 요청만 지원합니다.' });
     const now = Date.now(); while (recent.length && recent[0] < now - 60000) recent.shift();

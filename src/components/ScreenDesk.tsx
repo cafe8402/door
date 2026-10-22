@@ -11,7 +11,7 @@ interface Props {
 export const ScreenDesk: React.FC<Props> = ({onStart,onReturnToPortal,onOpenHowToUse,onOpenWhatWeCheck,onViewResult,onSaveResult,lastScan}) => {
   const [videoOpen,setVideoOpen]=useState(false);
   return <div className="desk-home">
-    <header className="desk-introduction"><p className="desk-label">AI 업무도구 보안점검의 점검실</p><h1>무엇을 점검할까요?</h1><p>파일이나 웹사이트 주소를 선택하세요.<br />확인한 내용과 다음 할 일을 쉽게 안내해 드려요.</p><span className="desk-handwritten">잘 만든 마음, 오래 쓰도록.</span></header>
+    <header className="desk-introduction"><p className="desk-label">ai-work-security의 점검실</p><h1>무엇을 점검할까요?</h1><p>파일이나 웹사이트 주소를 선택하세요.<br />확인한 내용과 다음 할 일을 쉽게 안내해 드려요.</p><span className="desk-handwritten">잘 만든 마음, 오래 쓰도록.</span></header>
     <div className="desk-layout"><section aria-labelledby="desk-start-title"><div className="desk-section-title"><h2 id="desk-start-title">점검할 자료를 골라주세요</h2><button onClick={onOpenHowToUse}>처음이라면, 이용 방법<ArrowUpRight size={13}/></button></div>
       <div className="desk-methods"><button className="desk-method" onClick={()=>onStart('upload')}><span className="desk-method-number"><InspectionIcon kind="file" size={36}/></span><div><h3>코드 파일 검사</h3><p>만들고 있는 파일이나 프로젝트 폴더를 선택해요.</p><small>접속 키 노출 · 위험한 SQL · 자료 접근 설정</small></div><ArrowUpRight className="desk-method-arrow" size={23}/></button>
       <button className="desk-method" onClick={()=>onStart('url')}><span className="desk-method-number"><InspectionIcon kind="web" size={36}/></span><div><h3>웹사이트 주소 검사</h3><p>이미 운영 중인 사이트의 공개된 부분을 확인해요.</p><small>보안 연결 · 보호 설정 · 공개된 코드</small></div><ArrowUpRight className="desk-method-arrow" size={23}/></button>

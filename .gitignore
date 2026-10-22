@@ -19,3 +19,11 @@ coverage/
 .ppt-build/
 sites/security-check/
 sites/security-check-deploy.tar.gz
+# Local media tooling and render intermediates
+tmp/
+outputs/**/render/
+outputs/**/frames/
+outputs/**/tools/
+outputs/**/audio/
+outputs/**/narration.wav
+outputs/**/voice-*.mp3
